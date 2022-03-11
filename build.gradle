@@ -1,0 +1,99 @@
+plugins {
+    id 'java'
+    id "io.freefair.lombok" version "6.1.0"
+    id 'io.qameta.allure' version "2.9.6"
+    id "io.github.kobylynskyi.graphql.codegen" version "5.4.0"
+//    id "com.graphql_java_generator.graphql-gradle-plugin" version "1.18.3"
+}
+
+repositories {
+    mavenCentral()
+//    mavenLocal()
+//    jcenter()
+}
+
+def allureVersion = "2.13.6"
+def testngVersion = "6.14.3"
+
+allure {
+    autoconfigure = true
+    aspectjweaver = true
+    version = allureVersion
+
+}
+
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+
+if (!hasProperty('buildProfile')) ext.buildProfile = 'local'
+//
+apply from: "profile-${buildProfile}.gradle"
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.awaitility/awaitility
+    implementation 'org.awaitility:awaitility:4.2.0'
+    implementation 'org.jtwig:jtwig-core:5.87.0.RELEASE'
+    // https://mvnrepository.com/artifact/org.jdbi/jdbi
+    // https://mvnrepository.com/artifact/org.jdbi/jdbi3-core
+    implementation 'org.jdbi:jdbi3-core:3.27.2'
+// https://mvnrepository.com/artifact/org.jdbi/jdbi3-postgres
+    testImplementation 'org.jdbi:jdbi3-postgres:3.27.2'
+// https://mvnrepository.com/artifact/org.postgresql/postgresql
+    implementation 'org.postgresql:postgresql:42.3.3'
+// https://mvnrepository.com/artifact/org.jdbi/jdbi3-sqlobject
+    implementation 'org.jdbi:jdbi3-sqlobject:3.27.2'
+
+
+
+    implementation 'org.apache.kafka:kafka-clients:2.3.1'
+    implementation 'io.github.bonigarcia:webdrivermanager:4.4.3'
+    implementation 'com.codeborne:selenide:5.24.3'
+//    implementation "gradle.plugin.com.graphql-java-generator:graphql-gradle-plugin:1.18.3"
+    implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
+
+    implementation 'org.apache.logging.log4j:log4j-api:2.14.1'
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.apache.commons:commons-configuration2:2.7'
+    // https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils
+    implementation 'commons-beanutils:commons-beanutils:1.9.4'
+// https://mvnrepository.com/artifact/io.rest-assured/rest-assured
+    implementation 'io.rest-assured:rest-assured:4.5.0'
+    testImplementation("io.qameta.allure:allure-java-commons:$allureVersion")
+// https://mvnrepository.com/artifact/org.aeonbits.owner/owner
+    implementation group: 'org.aeonbits.owner', name: 'owner', version: '1.0.12'
+
+    testImplementation("org.testng:testng:$testngVersion")
+}
+//configurations {
+//    testCompile
+//}
+//sourceSets {
+//    test {
+//        output.resourcesDir = "build/resources/test"
+//    }
+//}
+
+test {
+    ignoreFailures = true
+    useTestNG()
+            {
+//                suites 'src/test/resources/suite.xml'
+                ignoreFailures = true
+                useDefaultListeners = true
+//                outputDirectory = file("$projectDir/AutomationReport")
+                testLogging {
+                    events "PASSED", "FAILED", "SKIPPED"
+                }
+            }
+    systemProperties System.properties
+}
+
+graphqlCodegen {
+    graphqlSchemas.includePattern = "schema\\.graphql"
+    outputDir = new File("${buildDir}/generated")
+}
+

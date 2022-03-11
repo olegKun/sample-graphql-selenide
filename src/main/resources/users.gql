@@ -1,0 +1,10 @@
+query ($limit: Int) {
+    users(limit: $limit) {
+        name
+        rocket
+        id
+        twitter
+        timestamp
+    }
+}
+
