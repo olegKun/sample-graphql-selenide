@@ -3,10 +3,10 @@ package com.oleh.graphql.api.model;
 /**
  * columns and relationships of "users"
  */
-@javax.annotation.Generated(
-    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
-    date = "2022-03-02T15:14:45+0200"
-)
+//@javax.annotation.Generated(
+//    value = "com.kobylynskyi.graphql.codegen.GraphQLCodegen",
+//    date = "2022-03-02T15:14:45+0200"
+//)
 public class Users implements java.io.Serializable {
 
     private static final long serialVersionUID = 1L;

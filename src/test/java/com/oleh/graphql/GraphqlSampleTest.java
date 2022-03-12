@@ -1,5 +1,8 @@
 package com.oleh.graphql;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+
 import com.oleh.graphql.api.model.Users;
 import com.oleh.graphql.api.service.GraphqlApiService;
 
@@ -19,9 +22,9 @@ public class GraphqlSampleTest {
 
     @Test
     public void testGraphQl() {
-        Map<String, Integer> params = new HashMap<>();
-        params.put("limit", 1);
-        List<Users> users = service.getUsers(params);
-        System.out.println();
+//        Map<String, Integer> params = new HashMap<>();
+//        params.put("limit", 1);
+//        List<Users> users = service.getUsers(params);
+//        assertThat(users,hasSize(1));
     }
 }
