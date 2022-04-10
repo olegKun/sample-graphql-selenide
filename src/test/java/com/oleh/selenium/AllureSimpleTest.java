@@ -1,4 +1,4 @@
-package com.oleh.test;
+package com.oleh.selenium;
 
 import static io.qameta.allure.Allure.step;
 
