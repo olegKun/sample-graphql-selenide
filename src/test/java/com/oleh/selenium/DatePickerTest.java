@@ -1,17 +1,20 @@
-package com.oleh.test;
+package com.oleh.selenium;
 
 
 import org.testng.annotations.Test;
+import com.codeborne.selenide.Selenide;
+import com.oleh.page.JqueryDatePickerPage;
+import com.oleh.page.MainTestPage;
 
 public class DatePickerTest extends BaseTest {
 
     @Test
     public void sampleTest() {
-        System.out.println("test");
-        if (true){
-            throw new RuntimeException();
-        }
-//        JqueryDatePickerPage jqueryDatePickerPage = new JqueryDatePickerPage();
+        getWebDriver().get("https://www.youtube.com/");
+//        if (true){
+//            throw new RuntimeException();
+//        }
+        JqueryDatePickerPage jqueryDatePickerPage = new JqueryDatePickerPage();
 //        jqueryDatePickerPage.openJqueryDatePickerPage()
 //                .setDateByName("from","16.01.2009");
 
@@ -20,7 +23,11 @@ public class DatePickerTest extends BaseTest {
 //                .setDateByClass("form-control","16.01.2009");
 //
 //        BootstrapDatePickerPage page = new BootstrapDatePickerPage();
+    }
 
+    @Test
+    public void testGoogle() throws InterruptedException {
+        BaseTest.getWebDriver().get("https://www.google.com/");
 
     }
 

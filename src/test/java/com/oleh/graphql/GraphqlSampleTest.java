@@ -22,9 +22,9 @@ public class GraphqlSampleTest {
 
     @Test
     public void testGraphQl() {
-//        Map<String, Integer> params = new HashMap<>();
-//        params.put("limit", 1);
-//        List<Users> users = service.getUsers(params);
-//        assertThat(users,hasSize(1));
+        Map<String, Integer> params = new HashMap<>();
+        params.put("limit", 1);
+        List<Users> users = service.getUsers(params);
+        assertThat(users,hasSize(1));
     }
 }

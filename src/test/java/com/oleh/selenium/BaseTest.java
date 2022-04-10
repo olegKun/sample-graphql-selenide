@@ -1,13 +1,22 @@
-package com.oleh.test;
+package com.oleh.selenium;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.oleh.properties.PropertiesHolder;
 import com.oleh.datamodel.TestEnvModel;
 import com.oleh.utils.Utilities;
+import com.oleh.utils.WaitCondition;
+import com.oleh.utils.WebDriverUtilities;
+
+import io.vavr.Predicates;
 import lombok.Getter;
 
 import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -18,12 +27,18 @@ import org.apache.logging.log4j.Logger;
 import org.testng.annotations.BeforeMethod;
 
 import static com.codeborne.selenide.Selenide.open;
+import static io.vavr.API.$;
+import static io.vavr.API.Case;
+import static io.vavr.API.Match;
+import static io.vavr.Predicates.anyOf;
+import static io.vavr.Predicates.isNull;
 
 public class BaseTest {
     private static final String CONFIG_FILE_NAME_PROPERTY = "configFileName";
     private static final Logger LOG = LogManager.getLogger();
     private static Properties prop = Utilities.readFromPropertyFile("oldProject.properties");
     private static final String BLUEV_VERSION_PROP = "bluev.version";
+    static ThreadLocal<WebDriver> webDriverThreadLocal = new ThreadLocal<>();
 
     @Getter
     protected static TestEnvModel testEnv;
@@ -33,11 +48,15 @@ public class BaseTest {
 //        if (true) {
 //            throw new RuntimeException("ghj");
 //        }
+        System.setProperty("webdriver.chrome.driver", "I:\\Bhasker-ShiroCode\\work\\chromedriver.exe");
+
+
         String testConfigFileName = System.getProperty(CONFIG_FILE_NAME_PROPERTY);
         LOG.info("Load config file: " + testConfigFileName);
         prop = Utilities.readFromPropertyFile("oldProject.properties");
 
-        String baseUrl = PropertiesHolder.projectProperties.baseUrl();
+//        String baseUrl = PropertiesHolder.projectProperties.baseUrl();
+        String baseUrl = "https://www.google.com/";
         Configuration.baseUrl = baseUrl;
 
 //        Configuration.browser="firefox";
@@ -64,6 +83,13 @@ public class BaseTest {
         setupWebDriver();
     }
 
+    static WebDriver getWebDriver(){
+        if (webDriverThreadLocal.get()==null){
+            webDriverThreadLocal.set(new  ChromeDriver());
+        }
+        return webDriverThreadLocal.get();
+    }
+
     /**
      * Set up web driver environment.
      */
@@ -84,7 +110,19 @@ public class BaseTest {
         System.out.println();
     }
 
+public void getDriver(){
+        Match(System.getProperty("browser")).of(
+                Case($(String::isEmpty),()-> {throw new IllegalStateException();}),
+                Case($((String s) ->s.equalsIgnoreCase("Chrome")),()-> new ChromeDriver()),
+                Case($(anyOf(isNull())),()->{throw new RuntimeException();})
 
+        );
+
+//    WebDriverUtilities.waitFor(By.cssSelector(""),
+//            WaitCondition.visible
+////           ExpectedConditions::elementToBeClickable
+//    );
+}
 
 
     protected boolean isHeadlessModeEnabled() {

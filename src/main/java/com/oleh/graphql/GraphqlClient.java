@@ -22,14 +22,6 @@ public class GraphqlClient {
         this.url = url;
     }
 
-    public Response execute(String fileName) {
-        GraphqlQuery query = readGql(fileName);
-        return specification
-                .body(query)
-                .when()
-                .post(url);
-    }
-
     public GraphqlResponse execute(String fileName, Object variables) {
         GraphqlQuery query = readGql(fileName,variables);
         return new GraphqlResponse(specification
