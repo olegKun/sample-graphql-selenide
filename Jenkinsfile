@@ -17,6 +17,12 @@ pipeline {
                 sh("echo ${STATEMENT}")
             }
         }
+
+        stage("Example hook"){
+                    steps{
+                        sh("example HOOK")
+                    }
+                }
         stage("Check maven is installed") {
             steps {
                 cleanWs()
